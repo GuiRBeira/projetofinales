@@ -1,0 +1,1 @@
+Para evitar a necessidade de realizar fetch origin frequentemente, estou conduzindo testes em um repositório pessoal antes de integrar as alterações ao repositório principal. Link: https://github.com/SilasTorresRocha/EngenhariaSoftware 
