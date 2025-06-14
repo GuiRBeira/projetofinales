@@ -1,11 +1,5 @@
 // js/script.js
 document.addEventListener('DOMContentLoaded', () => {
-    // Dados mocados (simulando o que virá do back-end)
-    const tarefasIniciais = [
-        { nome: 'Prova de Cálculo', data: '2025-07-20' },
-        { nome: 'Entrega do Projeto de Algoritmos', data: '2025-07-25' }
-    ];
-
     const cronogramaContainer = document.getElementById('cronograma-container');
 
     function renderizarCronograma(tarefas) {
