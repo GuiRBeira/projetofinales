@@ -2,14 +2,14 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    background-color: #f4f4f9;
+    background-color: #f0f2f5; /* Um tom claro de cinza */
 }
 
 header {
-    background-color: #005f73; /* Um tom de azul */
+    background-color: #06467e;  /*tom de azul */
     color: white;
-    padding: 1rem;
-    text-align: center;
+    padding: 0.5rem;
+    text-align: center;;
 }
 
 main {
@@ -42,5 +42,15 @@ button {
 }
 
 .bg-brand-blue {
-    background-color: #005f73; /* Tom de azul do logo */
+    background-color: #06467e; /* Tom de azul do logo */
+}
+
+.navbar-brand {
+    color: white;
+    font-weight: bold;
+    border-style: solid;
+    border-color: yellow;
+    border-width: 0.2em;
+    padding: 0.3em;
+    border-radius: 0.3em;
 }
