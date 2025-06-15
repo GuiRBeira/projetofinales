@@ -1,12 +1,18 @@
 #root {
   max-width: 1280px;
-  margin: 0 auto;
+  margin: 0;
   padding: 2rem;
   text-align: center;
-}
-
-.bg-brand-blue {
-    background-color: #06467e !important;
+  background-color: #161616;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+  background-size: 20px 20px;
+  background-repeat: repeat;
+  min-height: 100vh;
+  min-width: 100vw;
+  position: relative;
+  overflow: hidden;
+  color: #dfe4e9;
+  padding: 15rem;
 }
 
 .logo {
