@@ -25,6 +25,6 @@ dist-ssr
 
 # Ignorar arquivos sensíveis e temporários
 .env
-pycache/
+*pycache/
 *.pyc
 venv/
