@@ -1,7 +1,7 @@
 // src/components/LoginModal.jsx
 import { Modal, Button, Form } from 'react-bootstrap';
 
-function LoginModal({ show, handleClose }) {
+function LoginModal({ show, handleClose, handleCreateUser}) {
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
@@ -10,17 +10,16 @@ function LoginModal({ show, handleClose }) {
       <Modal.Body>
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Endereço de Email</Form.Label>
-            <Form.Control type="email" placeholder="seuemail@exemplo.com" />
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Senha</Form.Label>
-            <Form.Control type="password" placeholder="Senha" />
+            <Form.Label>Usuario</Form.Label>
+            <Form.Control type="email" placeholder="Digite seu nome de Usuario" />
           </Form.Group>
         </Form>
+        
       </Modal.Body>
       <Modal.Footer>
+        <Button variant="success" onClick={handleCreateUser} className="me-auto">
+          Criar Novo Usuário
+        </Button>
         <Button variant="secondary" onClick={handleClose}>
           Fechar
         </Button>
