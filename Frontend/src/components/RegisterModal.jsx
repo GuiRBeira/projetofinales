@@ -38,12 +38,13 @@ function RegisterModal({ show, handleClose }) {
 
       // 2. Converte a resposta da API para JSON
       const data = await response.json();
-
+      console.log(data.message);
+      
       // 3. Verifica se a resposta foi bem-sucedida (status 2xx)
       if (response.ok) {
         setApiError(false);
         setApiFeedback(data.message); // "Usuário criado com sucesso"
-        
+
         // Opcional: fechar o modal após um tempo
         setTimeout(() => {
           handleClose();
