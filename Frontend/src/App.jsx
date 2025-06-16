@@ -1,29 +1,44 @@
 import { useState } from 'react';
 import { Container, Button, Stack } from 'react-bootstrap';
 import Header from './components/Header';
-import './App.css';
 import LoginModal from './components/LoginModal';
-import RegisterModal from './components/RegisterModal'; // 1. Importa o novo componente
+import RegisterModal from './components/RegisterModal';
+import SuccessModal from './components/SuccessModal';
+import './App.css';
 
 function App() {
   const [showLoginModal, setShowLoginModal] = useState(false);
-  // 2. Cria o estado de visibilidade para o modal de registro
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const handleShowLogin = () => setShowLoginModal(true);
   const handleCloseLogin = () => setShowLoginModal(false);
-
-  // 3. Cria a função que fecha o modal de login e abre o de registro
   const handleOpenRegisterModal = () => {
-    handleCloseLogin(); // Fecha o modal de login
-    setShowRegisterModal(true); // Abre o modal de registro
+    setShowLoginModal(false);
+    setShowRegisterModal(true);
+  };
+  const handleCloseRegister = () => setShowRegisterModal(false);
+  const handleCloseSuccess = () => setShowSuccessModal(false);
+
+  const handleLoginSuccess = (userData) => {
+    // CORREÇÃO: Guarde o objeto de usuário inteiro, não apenas o nome.
+    setCurrentUser(userData); 
+    setShowLoginModal(false);
+    setShowSuccessModal(true);
   };
 
-  const handleCloseRegister = () => setShowRegisterModal(false);
+  const handleLogout = () => {
+    setCurrentUser(null);
+  };
 
   return (
     <>
-      <Header onLoginClick={handleShowLogin} />
+      <Header
+        onLoginClick={handleShowLogin}
+        user={currentUser}
+        onLogout={handleLogout}
+      />
       <Container as="main" className="mt-5">
         <div className="text-center">
           <h1 className="fw-bold">Bem-vindo ao EduSync</h1>
@@ -35,21 +50,22 @@ function App() {
             <Button variant="success" size="lg">Criar Nova Rotina</Button>
           </Stack>
         </div>
-        <div className="mt-5">
-        </div>
       </Container>
-
-      {/* 4. Passa a nova função para o LoginModal via props */}
       <LoginModal
         show={showLoginModal}
         handleClose={handleCloseLogin}
         handleCreateUser={handleOpenRegisterModal}
+        onLoginSuccess={handleLoginSuccess}
       />
-
-      {/* 5. Renderiza o RegisterModal, controlando sua visibilidade */}
       <RegisterModal
         show={showRegisterModal}
         handleClose={handleCloseRegister}
+      />
+      <SuccessModal
+        show={showSuccessModal}
+        handleClose={handleCloseSuccess}
+        // Agora isso funciona, pois 'currentUser' é um objeto
+        username={currentUser ? currentUser.username : ''}
       />
     </>
   );

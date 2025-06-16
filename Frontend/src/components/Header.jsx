@@ -1,8 +1,6 @@
-// src/components/Header.jsx
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 
-// 1. Receba a propriedade 'onLoginClick'
-function Header({ onLoginClick }) {
+function Header({ onLoginClick, user, onLogout }) {
   return (
     <Navbar fixed="top" expand="lg" bg="dark" data-bs-theme="dark" className="shadow-sm">
       <Container fluid>
@@ -13,8 +11,17 @@ function Header({ onLoginClick }) {
             <Nav.Link href="#cronograma" active>Meu Cronograma</Nav.Link>
           </Nav>
           <Nav>
-            {/* 2. Chame a função no clique do botão */}
-            <Button variant="primary" onClick={onLoginClick}>Login</Button>
+            {user ? (
+              <>
+                <Navbar.Text className="me-3">
+                  {/* CORREÇÃO: Acessando a propriedade 'username' do objeto 'user' */}
+                  Olá, {user.username}!
+                </Navbar.Text>
+                <Button variant="outline-danger" onClick={onLogout}>Sair</Button>
+              </>
+            ) : (
+              <Button variant="primary" onClick={onLoginClick}>Login</Button>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
