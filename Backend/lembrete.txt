@@ -4,6 +4,8 @@ docker compose up --build
 
 curl -X POST "http://localhost:8000/api/gerar-planejamento/" -H "Content-Type: application/json" --data "{\"materias\": [\"Matemática\", \"História\"], \"horarios_aula\": { \"Matemática\": [\"segunda 10:00-12:00\"], \"História\": [\"terça 14:00-16:00\"] }, \"provas\": [{\"materia\": \"História\", \"data\": \"2025-06-18\"}], \"hobbies\": [\"violão\"], \"hora_acorda\": \"07:30\"}"
 
+
+
 Modelop json:
 {
   "horarios": {
@@ -59,6 +61,7 @@ curl -X POST "http://localhost:8000/api/gerar-planejamento/" ^
 }
 
 # modelo para receber
+
 {
   "horarios": {
     "Segunda": [],
@@ -72,3 +75,19 @@ curl -X POST "http://localhost:8000/api/gerar-planejamento/" ^
 }
 
 
+docker stop $(docker ps -aq)  # Para todos os containers
+docker rm $(docker ps -aq)    # Remove todos os containers
+
+
+
+http://localhost:8000/api/criarUsuario
+
+ADD USUARIO: {"nome": "novo_usuario"}
+
+
+http://localhost:8000/api/validarUsuario
+
+BUSCAR NO BANCO:
+{
+  "username": "teste"
+}

@@ -22,7 +22,11 @@ services:
     env_file:
       - ./api/.env
     environment:
+<<<<<<< HEAD
       - DJANGO_DB_HOST=bd
+=======
+      - DJANGO_DB_HOST=localhost
+>>>>>>> 9ed4359398c07dcd454ba0fcddeed1144574fec9
       - DJANGO_DB_NAME=bd
       - DJANGO_DB_USER=postgres
       - DJANGO_DB_PASSWORD=senha

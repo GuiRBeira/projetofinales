@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Ignorar arquivos sensíveis e temporários
+.env
+*pycache/
+*.pyc
+venv/
