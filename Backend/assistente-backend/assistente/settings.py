@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'bd',
         'USER': 'postgres',
         'PASSWORD': 'senha',
-        'HOST': os.environ.get('DJANGO_DB_HOST', 'localhost'),  
+        'HOST': 'host.docker.internal',
         'PORT': '5432',
     }
 }
