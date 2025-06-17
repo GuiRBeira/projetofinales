@@ -1,6 +1,8 @@
 from rest_framework import serializers
-from .models import Usuario
+# Adicionamos a importação do novo modelo 'Rotina'
+from .models import Usuario, Rotina
 
+# Este serializer está bom como está.
 class HorarioMateriaSerializer(serializers.Serializer):
     materia = serializers.CharField()
     horario = serializers.RegexField(
@@ -8,25 +10,36 @@ class HorarioMateriaSerializer(serializers.Serializer):
         error_messages={"invalid": "Formato deve ser HH:MM-HH:MM"}
     )
 
+# Este serializer está bom como está.
 class DiasDaSemanaSerializer(serializers.Serializer):
-    Segunda = HorarioMateriaSerializer(many=True)
-    Terça = HorarioMateriaSerializer(many=True)
-    Quarta = HorarioMateriaSerializer(many=True)
-    Quinta = HorarioMateriaSerializer(many=True)
-    Sexta = HorarioMateriaSerializer(many=True)
-    Sábado = HorarioMateriaSerializer(many=True)
-    Domingo = HorarioMateriaSerializer(many=True)
+    Segunda = HorarioMateriaSerializer(many=True, required=False)
+    Terça = HorarioMateriaSerializer(many=True, required=False)
+    Quarta = HorarioMateriaSerializer(many=True, required=False)
+    Quinta = HorarioMateriaSerializer(many=True, required=False)
+    Sexta = HorarioMateriaSerializer(many=True, required=False)
+    Sábado = HorarioMateriaSerializer(many=True, required=False)
+    Domingo = HorarioMateriaSerializer(many=True, required=False)
 
+# CORREÇÃO FINAL: Adicionado o campo 'username'
 class PlanejamentoRequestSerializer(serializers.Serializer):
+    username = serializers.CharField() # Adicionado para receber o nome do usuário
     horarios = DiasDaSemanaSerializer()
-    hobbies = serializers.ListField(child=serializers.CharField())
-    observacoes = serializers.CharField()
+    hobbies = serializers.ListField(child=serializers.CharField(), required=False, allow_empty=True)
+    observacoes = serializers.CharField(allow_blank=True, required=False)
 
+# Ajustado para retornar o 'id' e o 'nome'.
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['nome']
+        fields = ['id', 'nome']
 
+# Novo serializer para o modelo Rotina.
+class RotinaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rotina
+        fields = ['usuario', 'horarios', 'hobbies', 'observacoes']
+
+# Seus outros serializers continuam aqui.
 class ProvaSerializer(serializers.Serializer):
     materia = serializers.CharField()
     data = serializers.DateField()

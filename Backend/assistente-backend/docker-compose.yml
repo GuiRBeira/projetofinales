@@ -1,4 +1,8 @@
+# Define a versão do Docker Compose
+version: '3.8'
+
 services:
+  # Serviço 1: Seu aplicativo Django
   web:
     build: .
     volumes:
@@ -7,8 +11,21 @@ services:
       - "8000:8000"
     env_file:
       - ./api/.env
+    # Adicionado para garantir que o serviço 'db' inicie primeiro
+    depends_on:
+      - db
+
+  # Serviço 2: Seu banco de dados PostgreSQL
+  db:
+    image: postgres:16-alpine # Usando uma imagem oficial do PostgreSQL
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
     environment:
-      - DJANGO_DB_HOST=localhost
-      - DJANGO_DB_NAME=bd
-      - DJANGO_DB_USER=postgres
-      - DJANGO_DB_PASSWORD=senha
+      - POSTGRES_DB=bd
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=senha
+    # Não precisa expor a porta 5432 para fora, pois a comunicação é interna
+
+# Define o volume para persistir os dados do banco de dados
+volumes:
+  postgres_data:

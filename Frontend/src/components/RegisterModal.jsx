@@ -20,7 +20,6 @@ function RegisterModal({ show, handleClose }) {
     }
   }, [nome, confirmarNome]);
 
-  // Função `handleRegister` atualizada com a lógica da API
   const handleRegister = async () => {
     // Limpa feedbacks anteriores
     setApiFeedback('');
@@ -28,7 +27,7 @@ function RegisterModal({ show, handleClose }) {
 
     try {
       // 1. Faz a chamada (fetch) para a sua API
-      const response = await fetch('http://localhost:8000/criarUsuario', {
+      const response = await fetch('http://localhost:8000/criarUsuario/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,7 +52,7 @@ function RegisterModal({ show, handleClose }) {
       } else {
         // Se a API retornar um erro (ex: usuário já existe)
         setApiError(true);
-        // Acessa a mensagem de erro da sua API
+        // Acessa a mensagem de erro da API
         setApiFeedback(data.nome ? data.nome[0] : 'Ocorreu um erro desconhecido.');
       }
 

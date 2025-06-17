@@ -3,7 +3,6 @@ import { Modal, Button, ListGroup, Spinner } from 'react-bootstrap';
 function ViewRoutineModal({ show, handleClose, routine, isLoading }) {
 
   const renderContent = () => {
-    // A lógica de 'isLoading' e de 'nenhuma rotina' continua perfeita.
     if (isLoading) {
       return (
         <div className="text-center">

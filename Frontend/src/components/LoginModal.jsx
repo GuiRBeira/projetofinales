@@ -7,11 +7,9 @@ function LoginModal({ show, handleClose, handleCreateUser, onLoginSuccess }) {
 
   const handleLogin = async () => {
     setErroLogin('');
-    
-    // CORREÇÃO: A linha 'data.username = usuario' foi removida daqui.
 
     try {
-      const response = await fetch('http://localhost:8000/api/validarUsuario', {
+      const response = await fetch('http://localhost:8000/api/validarUsuario/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: usuario }),
@@ -20,19 +18,23 @@ function LoginModal({ show, handleClose, handleCreateUser, onLoginSuccess }) {
       const data = await response.json();
       
       if (response.ok) {
-        // A lógica correta para combinar os dados já estava aqui.
-        const combinedData = { ...data, username: usuario };
-        onLoginSuccess(combinedData);
+        // 'data' já deve conter { id: ..., nome: "..." }
+        // Se 'data' só tiver 'id', você pode precisar adicionar o 'username' de volta:
+        // const combinedData = { ...data, username: usuario };
+        // onLoginSuccess(combinedData);
+        // Ou, se 'data' já for o { id: ..., nome: "..." }, e 'nome' for o username:
+        onLoginSuccess({ id: data.id, username: data.nome }); // Garante que o objeto tenha 'username'
       } else {
-        setErroLogin(data.detail || 'Usuário inválido.');
+        // Melhorar a mensagem de erro da API
+        setErroLogin(data.message || data.detail || 'Usuário inválido.');
       }
     } catch (error) {
+      console.error("Erro ao conectar à API de login:", error);
       setErroLogin('Não foi possível conectar à API.');
     }
   };
 
   return (
-    // O JSX do return não precisa de alterações e continua o mesmo.
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>Login no EduSync</Modal.Title>

@@ -1,6 +1,4 @@
 import { Modal, Button } from 'react-bootstrap';
-
-// CORREÇÃO: Trocamos 'nome' por 'username' para ser consistente
 function SuccessModal({ show, handleClose, username }) { 
   return (
     <Modal show={show} onHide={handleClose} centered>
@@ -9,7 +7,6 @@ function SuccessModal({ show, handleClose, username }) {
       </Modal.Header>
       <Modal.Body>
         <p className="fs-5 text-center">
-          {/* CORREÇÃO: Usando a prop 'username' */}
           Bem-vindo de volta, <strong>{username}</strong>!
         </p>
       </Modal.Body>

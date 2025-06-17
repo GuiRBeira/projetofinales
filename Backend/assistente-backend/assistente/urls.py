@@ -1,14 +1,31 @@
+"""
+URL configuration for assistente project.
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/5.2/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
 from django.contrib import admin
-from django.urls import path, include
-from api.views import ValidarUsuarioView , CriarUsuarioView, gerar_planejamento, SincronizarProvasTrabalhosView
+from django.urls import path, include # A única importação necessária aqui do urls.
 
 urlpatterns = [
+    # Rota para o painel de administração do Django
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
-    path('planner/', include('planner.urls')),
     
-    path('gerar-planejamento/', gerar_planejamento),
-    path('api/validarUsuario', ValidarUsuarioView.as_view()),
-    path('criarUsuario', CriarUsuarioView.as_view()),
-    path('sincronizar-provas-trabalhos/', SincronizarProvasTrabalhosView.as_view()),
+    # Esta linha delega todas as URLs que começam com 'api/' 
+    # para serem gerenciadas pelo arquivo 'api/urls.py'
+    path('api/', include('api.urls')),
+    
+    # Se você tiver outro app chamado 'planner', esta linha está correta.
+    # Caso contrário, pode ser removida.
+    path('planner/', include('planner.urls')),
 ]

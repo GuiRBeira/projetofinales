@@ -20,7 +20,8 @@ function App() {
   const [showViewRoutineModal, setShowViewRoutineModal] = useState(false);
   
   // --- Estados de Dados da Aplicação ---
-  const [currentUser, setCurrentUser] = useState(null);
+  // currentUser agora pode armazenar { id: ..., username: "..." }
+  const [currentUser, setCurrentUser] = useState(null); 
   const [userRoutine, setUserRoutine] = useState(null);
   const [isLoadingRoutine, setIsLoadingRoutine] = useState(false);
 
@@ -42,20 +43,22 @@ function App() {
 
   const handleCloseViewRoutineModal = () => setShowViewRoutineModal(false);
   
+  // Esta função é chamada pelo LoginModal após o sucesso
   const handleLoginSuccess = (userData) => {
-    setCurrentUser(userData);
+    // userData deve ser { id: ..., username: "..." }
+    setCurrentUser(userData); 
     setShowLoginModal(false);
     setShowSuccessModal(true);
   };
 
   const handleLogout = () => {
     setCurrentUser(null);
-    setUserRoutine(null); // Limpa a rotina ao fazer logout
+    setUserRoutine(null);
   };
 
   const handleShowViewRoutine = async () => {
-    if (!currentUser || !currentUser.id) {
-      alert("Erro: Faça login novamente. O objeto de usuário não contém um ID para buscar a rotina.");
+    if (!currentUser || !currentUser.username) { // Verifica se há um usuário logado e se ele tem username
+      alert("Erro: Faça login para ver sua rotina.");
       return; 
     }
 
@@ -63,12 +66,19 @@ function App() {
     setShowViewRoutineModal(true);
 
     try {
-      const response = await fetch(`http://localhost:8000/api/rotina/${currentUser.id}`);
+      const response = await fetch('http://localhost:8000/api/buscar-rotina/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: currentUser.username }), // Usa currentUser.username
+      });
+      
       if (response.ok) {
         const data = await response.json();
         setUserRoutine(data);
       } else {
-        console.error("Nenhuma rotina encontrada ou erro na API ao buscar.");
+        console.error("Nenhuma rotina encontrada ou erro na API ao buscar.", response.status);
         setUserRoutine(null); 
       }
     } catch (error) {
@@ -80,8 +90,8 @@ function App() {
   };
   
   const handleRoutineGenerated = (generatedRoutine) => {
-    setUserRoutine(generatedRoutine); // Guarda a nova rotina no estado
-    setShowViewRoutineModal(true);    // Abre o modal de visualização para exibi-la
+    setUserRoutine(generatedRoutine);
+    setShowViewRoutineModal(true);
   };
 
   return (
@@ -130,6 +140,8 @@ function App() {
         show={showRoutineModal}
         handleClose={handleCloseRoutineModal}
         onRoutineGenerated={handleRoutineGenerated}
+        // PASSA O USERNAME PARA O ROUTINEMODAL
+        username={currentUser ? currentUser.username : null} 
       />
       <ViewRoutineModal
         show={showViewRoutineModal}
