@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, Button, Form, Row, Col, Card, CloseButton } from 'react-bootstrap';
+import { Modal, Button, Form, Row, Col, Card, CloseButton, Spinner } from 'react-bootstrap';
 
 const DIAS_DA_SEMANA = [
   { chave: 'segunda', nome: 'Segunda-feira' },
@@ -11,7 +11,7 @@ const DIAS_DA_SEMANA = [
   { chave: 'domingo', nome: 'Domingo' },
 ];
 
-function RoutineModal({ show, handleClose }) {
+function RoutineModal({ show, handleClose, onRoutineGenerated }) {
   const [rotina, setRotina] = useState({
     segunda: [],
     terca: [],
@@ -23,8 +23,8 @@ function RoutineModal({ show, handleClose }) {
   });
 
   const [observacoes, setObservacoes] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  // 1. ATUALIZAÇÃO: Adiciona 'horarioInicio' e 'horarioFim'
   const handleAddMateria = (dia) => {
     setRotina(prevRotina => ({
       ...prevRotina,
@@ -49,11 +49,12 @@ function RoutineModal({ show, handleClose }) {
   };
 
   const handleSaveRotina = async () => {
-    // 3. ATUALIZAÇÃO: Formata o horário para "inicio-fim"
+    setIsLoading(true);
+
     const formatarHorarios = (dia) => {
       return dia.map(item => ({
         materia: item.materia,
-        horario: `${item.horarioInicio}-${item.horarioFim}` // Junta os horários
+        horario: `${item.horarioInicio}-${item.horarioFim}`
       }));
     };
 
@@ -72,11 +73,30 @@ function RoutineModal({ show, handleClose }) {
       hobbies: [],
       observacoes: observacoes,
     };
-
-    console.log("JSON que será enviado para a API:", JSON.stringify(payload, null, 2));
     
-    alert('Estrutura do JSON gerada! Verifique o console para ver os dados.');
-    handleClose();
+    try {
+      const response = await fetch('http://localhost:8000/gerar-planejamento/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        const generatedRoutine = await response.json();
+        alert('Planejamento gerado com sucesso!');
+        onRoutineGenerated(generatedRoutine); // Devolve a rotina gerada para o App.jsx
+        handleClose(); // Fecha o modal de criação
+      } else {
+        alert('Falha ao gerar o planejamento.');
+      }
+    } catch (error) {
+      console.error('Erro de conexão ao gerar planejamento:', error);
+      alert('Erro de conexão.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -100,7 +120,6 @@ function RoutineModal({ show, handleClose }) {
                         onChange={(e) => handleInputChange(dia.chave, item.id, 'materia', e.target.value)}
                       />
                     </Col>
-                    {/* 2. ATUALIZAÇÃO: Adiciona campos de Início e Fim */}
                     <Col md={3}>
                       <Form.Control 
                         type="time"
@@ -141,8 +160,19 @@ function RoutineModal({ show, handleClose }) {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>Fechar</Button>
-        <Button variant="primary" onClick={handleSaveRotina}>Salvar Rotina</Button>
+        <Button variant="secondary" onClick={handleClose} disabled={isLoading}>
+          Fechar
+        </Button>
+        <Button variant="primary" onClick={handleSaveRotina} disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/>
+              <span className="ms-2">Salvando...</span>
+            </>
+          ) : (
+            'Salvar Rotina'
+          )}
+        </Button>
       </Modal.Footer>
     </Modal>
   );
