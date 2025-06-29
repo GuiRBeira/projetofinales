@@ -27,7 +27,7 @@ function RegisterModal({ show, handleClose }) {
 
     try {
       // 1. Faz a chamada (fetch) para a sua API
-      const response = await fetch('http://localhost:8000/criarUsuario/', {
+      const response = await fetch('http://localhost:8000/api/criarUsuario/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

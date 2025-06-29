@@ -1,4 +1,5 @@
 import { Modal, Button, ListGroup, Spinner } from 'react-bootstrap';
+const diasDaSemana = ['Domingo','Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 
 function ViewRoutineModal({ show, handleClose, routine, isLoading }) {
 
@@ -17,11 +18,14 @@ function ViewRoutineModal({ show, handleClose, routine, isLoading }) {
     if (!routine || !routine.horarios) {
       return <p>Nenhuma rotina encontrada para este usuário.</p>;
     }
-
+    console.log("erik lindo recebida:", Object.entries(routine.horarios).sort(([diaA], [diaB]) => diasDaSemana.indexOf(diaA.toLowerCase()) - diasDaSemana.indexOf(diaB.toLowerCase()))); // Log para depuração
+    
     return (
       <>
         {/* Lógica de exibição simplificada e corrigida */}
-        {Object.entries(routine.horarios).map(([dia, aulas]) => (
+        {Object.entries(routine.horarios).sort(([diaA], [diaB]) => {
+          console.log("Comparando dias:", diaA, diaB); // Log para depuração
+          return diasDaSemana.indexOf(diaA.toLowerCase()) - diasDaSemana.indexOf(diaB.toLowerCase())}).map(([dia, aulas]) =>(
           <div key={dia} className="mb-3">
             <h5>{dia}</h5>
             {aulas.length > 0 ? (
@@ -29,7 +33,7 @@ function ViewRoutineModal({ show, handleClose, routine, isLoading }) {
               <ListGroup variant="flush">
                 {aulas.map((aula, index) => (
                   <ListGroup.Item key={index}>
-                    <strong>{aula.horario}</strong> - {aula.materia}
+                    <strong>{aula.horario}</strong> - <strong>{aula.atividade}</strong>
                   </ListGroup.Item>
                 ))}
               </ListGroup>

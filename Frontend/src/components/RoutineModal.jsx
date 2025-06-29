@@ -6,7 +6,7 @@ import { Modal, Button, Form, Row, Col, Card, CloseButton, Spinner, Alert } from
 const DIAS_DA_SEMANA = [
   { chave: 'segunda', nome: 'Segunda-feira' },
   { chave: 'terca', nome: 'Terça-feira' },
-  { chave: 'quarta', 'nome': 'Quarta-feira' }, // 'nome' em aspas para consistência, embora não estritamente necessário aqui
+  { chave: 'quarta', nome: 'Quarta-feira' }, // 'nome' em aspas para consistência, embora não estritamente necessário aqui
   { chave: 'quinta', nome: 'Quinta-feira' },
   { chave: 'sexta', nome: 'Sexta-feira' },
   { chave: 'sabado', nome: 'Sábado' },
@@ -25,6 +25,7 @@ function RoutineModal({ show, handleClose, onRoutineGenerated, username }) {
     sabado: [],
     domingo: [],
   });
+
 
   const [observacoes, setObservacoes] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +49,6 @@ function RoutineModal({ show, handleClose, onRoutineGenerated, username }) {
       [dia]: [...prevRotina[dia], { id: Date.now(), materia: '', horarioInicio: '', horarioFim: '' }] 
     }));
   };
-  
   const handleRemoveMateria = (dia, id) => {
     setRotina(prevRotina => ({
       ...prevRotina,
@@ -82,6 +82,7 @@ function RoutineModal({ show, handleClose, onRoutineGenerated, username }) {
       }));
     };
 
+    
     const horariosFormatados = {
       Segunda: formatarHorarios(rotina.segunda),
       Terça:   formatarHorarios(rotina.terca),
@@ -94,11 +95,13 @@ function RoutineModal({ show, handleClose, onRoutineGenerated, username }) {
 
     const payload = {
       username: username, // AGORA ESTÁ USANDO A PROP 'username'
+      //materia: item.materia,
       horarios: horariosFormatados,
       hobbies: [], // Se houver um campo para hobbies no futuro, preencha aqui
       observacoes: observacoes,
     };
     
+    console.log('Payload enviado:', payload); // Log para depuração
     try {
       const response = await fetch('http://localhost:8000/api/gerar-planejamento/', {
         method: 'POST',
@@ -107,7 +110,7 @@ function RoutineModal({ show, handleClose, onRoutineGenerated, username }) {
         },
         body: JSON.stringify(payload),
       });
-
+      console.log('Resposta da API:', response); // Log para depuração
       if (response.ok) {
         const generatedRoutine = await response.json();
         alert('Planejamento gerado com sucesso!');
@@ -133,7 +136,7 @@ function RoutineModal({ show, handleClose, onRoutineGenerated, username }) {
       <Modal.Header closeButton>
         <Modal.Title>Criar Nova Rotina de Estudos</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body>        
         {error && <Alert variant="danger">{error}</Alert>} {/* Exibe mensagens de erro */}
         <Form>
           {DIAS_DA_SEMANA.map(dia => (

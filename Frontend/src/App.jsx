@@ -76,6 +76,7 @@ function App() {
       
       if (response.ok) {
         const data = await response.json();
+        console.log("Rotina recebida:", data); // Log para depuração
         setUserRoutine(data);
       } else {
         console.error("Nenhuma rotina encontrada ou erro na API ao buscar.", response.status);
